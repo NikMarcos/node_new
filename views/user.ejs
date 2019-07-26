@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <% include ./layouts/head %>
+  </head>
+  <body>
+    <% include ./layouts/navbar %>
+    <%- messages('my_message_template', locals) %>
+    <% let user = userData[0]; %>
+    <%= user.name %><br>
+    <%= user.surname %>
+
+    <% let img = user.imgname; %>
+    <% if (!img || img.length == 0) { %>
+    <div class="alert alert-success col-sm-2">
+      <p class="text-center"><%= pageData.notPic %></p>
+    </div>
+  <%  } else { %>
+      <% img.forEach(function (file) { %>
+        <img src="uploads/<%= file %>" class="img-thumbnail" width="10%">
+        <form action="/image/deleteImage/<%= file %>" method="GET">
+          <input type="submit" class="btn btn-outline-danger" value="Удалить"/><br><br>
+        </form>
+    <%  }); %>
+<% } %>
+<form action="/image/loadimage" method="post" enctype="multipart/form-data">
+  <input type="file" name="image"/><br><br>
+  <input type="submit" value="Загрузить"/><br><br>
+</form>
+</div><br><br>
+
+  </body>
+</html>

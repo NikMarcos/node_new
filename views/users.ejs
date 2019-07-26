@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <% include ./layouts/head %>
+  </head>
+  <body>
+    <% include ./layouts/navbar %>
+    <br>
+    <form class="form-inline">
+      <div class="form-group mb-2">
+      <input id='searchInput' type="text" name="name" class="form-control">
+      </div>
+      <input id='searchButt' type="submit" value="Найти" class="btn btn-primary mb-2">
+    </form>
+  <br>
+  <div id='newData'>
+      <% if (userData) { %>
+      <% userData.forEach(function (user) { %>
+        <a href="/user/<%= user['login'] %>" >
+          <div class="users_list">
+            <%= user['name'] %><br>
+            <%= user['login'] %><br>
+          </div>
+          <br><br>
+        </a>
+    <%  }); %>
+   <% } %>
+  </div>
+  <script>
+
+  // var myInit = { method: 'GET',
+  //              // mode: 'no-cors',
+  //              cache: 'default',
+  //              headers: {
+  //                'Accept': 'application/json',
+  //                'Content-Type': 'application/json',
+  //                'Access-Control-Allow-Origin':'*'
+  //              } };
+
+  fetch('https://mdbsites.com/priceAPI/search/474jTeYx2r2Va35794tCScAXWJG9hU2HcgxzMowaZUnu/8LQW8f7P5d5PZM7GtZEBgaqRPGSzS3DfPuiXrURJ4AJS?')
+  .then(response => {
+    const contentType = response.headers.get("content-type");
+    if (contentType && contentType.indexOf("application/json") !== -1) {
+      return response.json().then(data => {
+        console.log(data);
+      });
+    } else {
+      return response.text().then(text => {
+        console.log(text);
+      });
+    }
+  });
+    // for (var i = 0; i < 5; i++) {
+    //   console.log(res);
+    // }
+    // console.log(res);
+    // let firstElement = res[0];
+    // console.log(firstElement);
+  // });
+
+    $(".form-inline").submit(function (e) {
+      let val = $('#searchInput').val().toLowerCase();
+      if (val) {
+        $.ajax({
+          method: "GET",
+          url: '/users',
+          data: {name: val},
+          success : function(tempUserData){
+            $('#newData').children().remove();
+            /////////////Тоже рабочий вариант////////////////////
+            // let htmlUserData = '';
+            ////////////////////////////////////////////////////
+            tempUserData.forEach(function (user) {
+             let aElement = $('<a>', {
+                title: 'Нажми на ссылку',
+                href: `/user/${user['login']}`,
+                class: user['login'],
+                append: $('<br>')
+                .add($('<div>', {
+                    html: `${user['login']}<br>${user['name']}`,
+                    class: 'users_list'
+                }))
+              }).appendTo('#newData');
+              /////////Тоже рабочий вариант////////////////////////////////////
+              // htmlUserData += `<a href="/user/${user['login']}}"><div class="users_list">${user['login']}<br>${user['name']}</div></a><br>`;
+              ////////////////////////////////////////////////////////////////
+            });
+            ////////////Тоже рабочий вариант//////////////////////
+            // $('#newData').html(htmlUserData);
+            /////////////////////////////////////////////////////
+          }
+        });
+        } else {
+          return false;
+        }
+        e.preventDefault();
+      });
+    </script>
+  </body>
+</html>

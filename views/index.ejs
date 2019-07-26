@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+  <head>
+      <% include ./layouts/head %>
+  </head>
+  <body>
+    <% include ./layouts/navbar %>
+    <%- messages('my_message_template', locals) %>
+
+    <div class="exit-form">
+      <h3><p><%= pageData.enter %></p></h3>
+      <form action="/user" method="post">
+        <label for="login"><%= pageData.login %></label><br>
+        <input type="text" name="login"><br><br>
+        <label for="login"><%= pageData.pass %></label><br>
+        <input type="password" name="pass"><br><br>
+        <button type="submit" name="button" class="btn btn-outline-primary"><%= pageData.sendbutton %></button>
+      </form>
+    </div>
+
+  </body>
+</html>
