@@ -18,7 +18,8 @@ app.use('/', function (req, res, next) {
     next();
   }
 });
-// console.log();
+console.log("fff");
+console.log("fff");
 const en_lang = require('./locales/en.js');
 const ru_lang = require('./locales/ru.js');
 const indexRouter = require('./routes/index');
